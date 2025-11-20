@@ -1,0 +1,112 @@
+﻿<Page x:Class="FUMiniHotel_ProjectPRN212.Booking.BookingManagement"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+      xmlns:local="clr-namespace:FUMiniHotel_ProjectPRN212.Booking"
+      xmlns:converters="clr-namespace:FUMiniHotel_ProjectPRN212.Converters"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="1300"
+      Title="BookingManagement"
+      Background="Transparent">
+
+    <Page.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Page.Resources>
+
+    <Border CornerRadius="10" BorderThickness="1">
+        <Border.BorderBrush>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="{StaticResource winBorderColor1}" Offset="0"/>
+                <GradientStop Color="{StaticResource winBorderColor2}" Offset="0.5"/>
+                <GradientStop Color="{StaticResource winBorderColor3}" Offset="1"/>
+            </LinearGradientBrush>
+        </Border.BorderBrush>
+        <Border.Background>
+            <LinearGradientBrush StartPoint="1,1" EndPoint="0,0">
+                <GradientStop Color="{StaticResource primaryBackColor1}" Offset="0"/>
+                <GradientStop Color="{StaticResource primaryBackColor2}" Offset="1"/>
+            </LinearGradientBrush>
+        </Border.Background>
+        <Grid Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header và thanh tìm kiếm -->
+            <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,10,0,20">
+                <TextBlock Text="Lịch sử Đặt phòng"
+                           Foreground="{StaticResource titleColor2}"
+                           FontSize="24"
+                           FontFamily="Montserrat"
+                           FontWeight="Bold"
+                           VerticalAlignment="Center"
+                           Margin="0,0,20,0"/>
+
+                <!-- Ô tìm kiếm -->
+                <Grid>
+                    <TextBox x:Name="txtSearch" 
+                     Width="300" 
+                     Height="30" 
+                     Padding="5"
+                     VerticalAlignment="Center" 
+                     FontSize="14"
+                     Foreground="{StaticResource plainTextColor3}"
+                     Background="Transparent"
+                     BorderBrush="{StaticResource plainTextColor3}"
+                     BorderThickness="0,0,0,2"
+                     TextChanged="txtSearch_TextChanged"/>
+
+                    <TextBlock x:Name="txtPlaceholder"
+                     Text="Nhập tên khách hàng..."
+                     Foreground="{StaticResource plainTextColor3}"
+                     FontSize="14"
+                     VerticalAlignment="Center"
+                     Margin="5,0,0,0"
+                     IsHitTestVisible="False" 
+                     Visibility="{Binding ElementName=txtSearch, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                </Grid>
+            </StackPanel>
+
+            <!-- Danh sách đặt phòng -->
+            <DataGrid x:Name="dgBookings" Grid.Row="1" AutoGenerateColumns="False"
+                      Background="Transparent"
+                      Foreground="{StaticResource plainTextColor3}"
+                      BorderBrush="{StaticResource plainTextColor3}"
+                      BorderThickness="1"
+                      FontWeight="Bold"
+                      FontSize="14"
+                      RowBackground="Transparent"
+                      AlternatingRowBackground="{StaticResource panelOverColor}"
+                      HeadersVisibility="Column"
+                      IsReadOnly="True"
+                      SelectionMode="Single"
+                      SelectionUnit="FullRow"
+                      Margin="0,10,0,0">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Mã đặt" Binding="{Binding BookingId}" Width="*"/>
+                    <DataGridTextColumn Header="Khách hàng" Binding="{Binding Customer.FullName}" Width="2*"/>
+                    <DataGridTextColumn Header="Ngày đặt" Binding="{Binding BookingDate, StringFormat='dd/MM/yyyy'}" Width="*"/>
+                    <DataGridTextColumn Header="Tổng tiền" Binding="{Binding TotalPrice, StringFormat='{}{0:N0} VND'}" Width="*"/>
+                    <DataGridTextColumn Header="Trạng thái" Binding="{Binding Status}" Width="*"/>
+                    <DataGridTemplateColumn Header="Chi tiết" Width="Auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Style="{StaticResource iconButton}"
+                                        Tag="{StaticResource color2}"
+                                        Click="ViewDetails_Click">
+                                    <StackPanel Orientation="Horizontal">
+                                        <fa:IconImage Icon="InfoCircle" Foreground="White" Margin="0,0,5,0" Style="{StaticResource menuButtonIcon}"/>
+                                        <TextBlock Text="Xem"/>
+                                    </StackPanel>
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </Border>
+</Page>
